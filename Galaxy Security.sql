@@ -1,3 +1,4 @@
+-- Creating necessary tables
 CREATE TABLE GalaxyEmployees (
     EmployeeID INT PRIMARY KEY,
     FirstName TEXT,
@@ -39,6 +40,36 @@ CREATE TABLE Solution (
     FOREIGN KEY (CorrectCustomerID) REFERENCES Customers(CustomerID)
 );
 
+CREATE TABLE Items (
+    ItemID INT PRIMARY KEY,
+    ItemName TEXT,
+    ItemDescription TEXT,
+    ItemValue DECIMAL(10, 2)
+);
+
+CREATE TABLE Transactions (
+    TransactionID INT PRIMARY KEY,
+    CustomerID INT,
+    ItemID INT,
+    TransactionDate DATE,
+    Quantity INT,
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
+    FOREIGN KEY (ItemID) REFERENCES Items(ItemID)
+);
+
+CREATE TABLE WitnessStatements (
+    StatementID INT PRIMARY KEY,
+    WitnessName TEXT,
+    StatementDate DATE,
+    Notes TEXT
+);
+
+CREATE TABLE Hints (
+    HintID INT PRIMARY KEY,
+    HintText TEXT
+);
+
+-- Inserting initial data into tables
 INSERT INTO GalaxyEmployees (EmployeeID, FirstName, LastName, Position) VALUES
 (1, 'John', 'Doe', 'Manager'),
 (2, 'Jane', 'Doe', 'Sales Associate'),
@@ -83,6 +114,31 @@ INSERT INTO Interviews (InterviewID, EmployeeID, CustomerID, InterviewDate, Note
 INSERT INTO Solution (SolutionID, CorrectCustomerID) VALUES
 (1, 8);
 
+-- Inserting items
+INSERT INTO Items (ItemID, ItemName, ItemDescription, ItemValue) VALUES
+(1, 'Graphics Card', 'High-end graphics card', 799.99),
+(2, 'Laptop', 'Gaming laptop', 1299.99),
+(3, 'Mouse', 'Wireless mouse', 49.99);
+
+-- Inserting transactions
+INSERT INTO Transactions (TransactionID, CustomerID, ItemID, TransactionDate, Quantity) VALUES
+(1, 1, 1, '2023-03-17', 1),
+(2, 2, 2, '2023-03-17', 1),
+(3, 3, 3, '2023-03-17', 2),
+(4, 8, 1, '2023-03-17', 1);
+
+-- Inserting witness statements
+INSERT INTO WitnessStatements (StatementID, WitnessName, StatementDate, Notes) VALUES
+(1, 'Anna Lee', '2023-03-17', 'I saw a customer with blonde hair near the tech section.'),
+(2, 'Sam Green', '2023-03-17', 'A tall person was wearing a blue jacket acting suspiciously.'),
+(3, 'Nina White', '2023-03-17', 'Someone was asking a lot of questions about graphics cards.');
+
+-- Inserting hints
+INSERT INTO Hints (HintID, HintText) VALUES
+(1, 'Check the interview notes carefully.'),
+(2, 'Look at the attendance records for clues.'),
+(3, 'Witness statements might help.');
+
 -- Query to check if the given customer ID matches the correct answer
 -- Replace {input_customer_id} with the actual input from the user
 SELECT CASE
@@ -90,4 +146,4 @@ SELECT CASE
     ELSE 'Incorrect. Try again.'
 END AS Result
 FROM Solution
-WHERE SolutionID = 1;/
+WHERE SolutionID = 1;
